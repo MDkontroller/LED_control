@@ -7,7 +7,7 @@ from std_msgs.msg import Int16
 from sensor_msgs.msg import NavSatFix                                      #imports the data type of the GPS-Sensor's topic / message
 from geometry_msgs.msg import Twist 
 #from test.msg import signals 
-#keine Bewegung = 0 vorwärts = 1 rückwärts = 2 links = 3 rechts = 4
+#keine Bewegung = 0 vorwärts = 1 rückwärts = 2 rechts = 3 links = 4
 
 #status= signals()
 
@@ -22,11 +22,11 @@ def fahrtrichtung(msg):
 
     rospy.loginfo("Fahrtichtung fkt called")
     if msg.angular.z > 0:                           #rechts
-        mode = 4
+        mode = 3
         #pub.publish(mode) 
     elif msg.angular.z < 0:                          #links
                                      
-        mode = 3
+        mode = 4
         #pub.publish(mode)
     elif msg.linear.x < 0:                           #rückwärts
         mode = 2
@@ -48,7 +48,7 @@ def gps_signal(msg):
         elif(mode == 2): mode = 12
         elif(mode == 3): mode = 13
         elif(mode == 4): mode = 14
-        #pub.publish(mode)
+        pub.publish(mode)
 
         #pub.publish(status)                                                #der Message wird gepublished
     else:
@@ -58,7 +58,7 @@ def gps_signal(msg):
         elif(mode == 2): mode = 22
         elif(mode == 3): mode = 23
         elif(mode == 4): mode = 24
-        #pub.publish(mode)                                                #der Message wird gepublished
+        pub.publish(mode)                                                #der Message wird gepublished
    
 def main():                                                               #Aufruffunktion des Suscribers
     rospy.init_node('status_signal', anonymous=True)                        
@@ -71,7 +71,7 @@ def main():                                                               #Aufru
 
     while not rospy.is_shutdown():
         rate.sleep()
-        pub.publish(mode)
+        #pub.publish(mode)
 main()
 
 
